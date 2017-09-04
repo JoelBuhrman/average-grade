@@ -44,15 +44,14 @@ export default class CurrentCourse extends Component{
   render(){
     this.updateCourseInfo()
     return(
-      <div>
-        KursInfo
+      <div className="courseInfo">
         {this.props.courseInfo &&
+          <div>
            <div onClick={this.selectNextCourse}>
-             Title: {this.props.courseInfo.title} <br/>
-             Points: {this.props.courseInfo.points} <br/>
-             Scale: {this.props.courseInfo.scale}
+             <div className="courseCode">{this.props.currentCourse}, {this.props.courseInfo.points} HP</div>
+              <div className="courseTitle">{this.props.courseInfo.title}</div>
            </div>
-         }
+
          <Grades
            setAverage={this.props.setAverage}
            hp={this.props.courseInfo && this.props.courseInfo.points}
@@ -64,7 +63,13 @@ export default class CurrentCourse extends Component{
            selectCourseInfo={this.props.selectCourseInfo}
            setCourseInfo={this.props.setCourseInfo}
           />
-         <Average average={this.props.average}/>
+        </div>
+      }
+      {!this.props.courseInfo &&
+        <div className="loading">
+          Fetching courses
+        </div>
+      }
       </div>
     )
   }

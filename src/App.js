@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import Programs from './components/Programs'
 import CurrentCourse from './components/CurrentCourse'
+import Average from './components/Average'
 
 
 class App extends Component {
@@ -22,19 +23,25 @@ class App extends Component {
             />
           }
           {this.props.selectedProgram &&
-            <CurrentCourse
-              selectedCourse={this.props.currentCourse}
-              setCourseInfo={this.props.setCourseInfo}
-              courseInfo={this.props.courseInfo}
+            <div>
+              <CurrentCourse
+                selectedCourse={this.props.currentCourse}
+                setCourseInfo={this.props.setCourseInfo}
+                courseInfo={this.props.courseInfo}
+                currentCourse={this.props.currentCourse}
 
-              selectedProgram={this.props.selectedProgram}
-              getCourses={this.props.getCourses}
-              courses={this.props.courses}
-              selectCourse={this.props.setCurrentCourse}
-              average={this.props.hp === 0 ? 0: (this.props.hpGradeMultiply/this.props.hp)}
-              addHp={this.props.addHp}
-              addHpGradeMultiply={this.props.addHpGradeMultiply}
-            />
+                selectedProgram={this.props.selectedProgram}
+                getCourses={this.props.getCourses}
+                courses={this.props.courses}
+                selectCourse={this.props.setCurrentCourse}
+                addHp={this.props.addHp}
+                addHpGradeMultiply={this.props.addHpGradeMultiply}
+              />
+            {this.props.courseInfo &&
+              <Average average={this.props.hp === 0 ? 0: (this.props.hpGradeMultiply/this.props.hp).toFixed(2)}/>
+            }
+
+            </div>
           }
 
         </div>

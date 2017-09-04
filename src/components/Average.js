@@ -9,14 +9,7 @@ export default class Average extends Component{
 
   render(){
     return(
-      <div
-        style={{
-          position: 'fixed',
-          bottom: 0,
-          textAlign: 'center',
-          fontSize: 30
-        }}
-      >
+      <div className="average">
            {this.props.average}
       </div>
     )

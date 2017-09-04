@@ -37,10 +37,10 @@ export default class Grades extends Component{
   render(){
     return(
       <div>
-           <button onClick={()=>this.calculateAverage(0)}>U</button>
-           <button onClick={()=>this.calculateAverage(3)}>3</button>
-           <button onClick={()=>this.calculateAverage(4)}>4</button>
-           <button onClick={()=>this.calculateAverage(5)}>5</button>
+           <button className="failGrade" onClick={()=>this.calculateAverage(0)}>U</button>
+           <button className="grade" onClick={()=>this.calculateAverage(3)}>3</button>
+           <button className="grade" onClick={()=>this.calculateAverage(4)}>4</button>
+           <button className="grade" onClick={()=>this.calculateAverage(5)}>5</button>
       </div>
     )
   }
