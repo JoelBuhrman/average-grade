@@ -1,5 +1,15 @@
 import * as types from '../constants'
 
+
+
+export function setReadyToCalculate () {
+  return (dispatch) => {
+    dispatch({
+      type: types.SET_READY_TO_CALCULATE,
+    })
+  }
+}
+
 export function addPrograms (programs) {
   return (dispatch) => {
     dispatch({
@@ -9,11 +19,29 @@ export function addPrograms (programs) {
   }
 }
 
+export function addYears (years) {
+  return (dispatch) => {
+    dispatch({
+      type: types.ADD_YEARS,
+      payload: years,
+    })
+  }
+}
+
 export function selectProgram (program) {
   return (dispatch) => {
     dispatch({
       type: types.SELECT_PROGRAM,
       payload: program,
+    })
+  }
+}
+
+export function selectYear (year) {
+  return (dispatch) => {
+    dispatch({
+      type: types.SELECT_YEAR,
+      payload: year,
     })
   }
 }
@@ -59,6 +87,15 @@ export function addHpGradeMultiply (multi) {
     dispatch({
       type: types.ADD_HP_GRADE_MULTIPLY,
       payload: multi,
+    })
+  }
+}
+
+export function addMasterCourse(course) {
+  return (dispatch) => {
+    dispatch({
+      type: types.ADD_MASTER_COURSE,
+      payload: course,
     })
   }
 }

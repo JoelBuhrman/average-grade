@@ -137,3 +137,27 @@ position: relative;
 .failGrade:hover{
   background-color: rgba(193, 222, 252, 0.9);
 }
+
+.masterHolder{
+  width: 70%;
+  text-align: left;
+  margin-left: 15%;
+  overflow: auto;
+  height: 50vh;
+  font-size: 20px;
+}
+
+.programs{
+  height: 20vh;
+  margin-top: 40vh;
+  overflow: scroll;
+  text-align: left;
+  font-size: 20px;
+}
+
+.programItem{
+  cursor: pointer;
+}
+.programItem:hover{
+  background: red;
+}

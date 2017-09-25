@@ -26,7 +26,7 @@ export default class Courses extends Component{
            <div
              onClick={()=>this.selectCourse(course.code)}
              key={course.code}
-             >{course.code} 
+             >{course.code}
            </div>
          )}
       </div>

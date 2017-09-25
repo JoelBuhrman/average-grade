@@ -24,7 +24,10 @@ export default class Grades extends Component{
     let index = 0
     this.props.courses.map((c, i) => c.code === this.props.selectedCourse ? index = i+1 : '')
     await this.selectCourse(this.props.courses[index].code)
-    getInfoOnCourse(this.props.selectedCourse, this.setCourseInfo)
+    fetch('/api/courseInfo/'+this.props.selectedCourse+'/'+this.props.selectedYear)
+      .then(res => res.json())
+      .then(courseInfo => this.props.setCourseInfo(courseInfo));
+    //getInfoOnCourse(this.props.selectedCourse, this.setCourseInfo)
   }
 
   selectCourse(code){
@@ -36,12 +39,12 @@ export default class Grades extends Component{
 
   render(){
     return(
-      <div>
+      <span>
            <button className="failGrade" onClick={()=>this.calculateAverage(0)}>U</button>
            <button className="grade" onClick={()=>this.calculateAverage(3)}>3</button>
            <button className="grade" onClick={()=>this.calculateAverage(4)}>4</button>
            <button className="grade" onClick={()=>this.calculateAverage(5)}>5</button>
-      </div>
+      </span>
     )
   }
 }

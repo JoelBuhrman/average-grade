@@ -9,25 +9,23 @@ export default class Programs extends Component{
     this.selectProgram= this.selectProgram.bind(this)
   }
 
-  selectProgram(){
-    const program = document.getElementById("mySelect").value
+  selectProgram(program){
     this.props.selectProgram(program.substring(1, program.indexOf(':')))
   }
 
   componentDidMount(){
-    getPrograms(this.props.addPrograms)
+    //getPrograms(this.props.addPrograms)
   }
   render(){
     return(
       <div className="myDropDown">
-        <select id="mySelect" onChange={()=> this.selectProgram()}>
-        {this.props.programs && this.props.programs.map((program) =>
-           <option
-             value={program.name}
-             >{program.name}
-           </option>
-         )}
-         </select>
+
+        <div className="programs">
+          {this.props.programs && this.props.programs.map((program) => (
+            <div className="programItem" onClick={()=>this.selectProgram(program.name)}>{program.name}</div>
+            )
+           )}
+        </div>
       </div>
     )
   }

@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {getInfoOnCourse, getCourses} from '../parser'
 import Grades from './Grades'
 import Average from './Average'
+import Master from './Master'
 
 export default class CurrentCourse extends Component{
 
@@ -32,20 +33,26 @@ export default class CurrentCourse extends Component{
   updateCourseInfo(){
     if(this.props.courses[0] && !this.props.courseInfo){
       this.selectCourse(this.props.courses[0].code)
-      getInfoOnCourse(this.props.selectedCourse, this.setCourseInfo)
+      fetch('/api/courseInfo/'+this.props.selectedCourse+'/'+this.props.selectedYear)
+        .then(res => res.json())
+        .then(courseInfo => this.props.setCourseInfo(courseInfo));
+      //getInfoOnCourse(this.props.selectedCourse, this.setCourseInfo)
     }
   }
 
 
   async componentDidMount(){
-    await getCourses(this.props.selectedProgram, this.props.getCourses)
+    fetch('/api/courses/'+this.props.selectedProgram+'/'+this.props.selectedYear)
+      .then(res => res.json())
+      .then(courses => this.props.getCourses(courses));
+    //await getCourses(this.props.selectedProgram, this.props.getCourses)
   }
 
   render(){
     this.updateCourseInfo()
     return(
       <div className="courseInfo">
-        {this.props.courseInfo &&
+        {(this.props.courseInfo && this.props.points<180) &&
           <div>
            <div onClick={this.selectNextCourse}>
              <div className="courseCode">{this.props.currentCourse}, {this.props.courseInfo.points} HP</div>
@@ -62,6 +69,7 @@ export default class CurrentCourse extends Component{
            selectCourse={this.props.selectCourse}
            selectCourseInfo={this.props.selectCourseInfo}
            setCourseInfo={this.props.setCourseInfo}
+           selectedYear={this.props.selectedYear}
           />
         </div>
       }
@@ -69,6 +77,14 @@ export default class CurrentCourse extends Component{
         <div className="loading">
           Fetching courses
         </div>
+      }
+      {this.props.points>=180 &&
+        <Master
+          currentCourse={this.props.currentCourse}
+          courses={this.props.courses}
+          addMasterCourse={this.props.addMasterCourse}
+          masterCourses={this.props.masterCourses}
+        />
       }
       </div>
     )
