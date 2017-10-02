@@ -13,12 +13,11 @@ export default class CurrentCourse extends Component{
     this.selectCourse = this.selectCourse.bind(this)
     this.updateCourseInfo = this.updateCourseInfo.bind(this)
     this.selectNextCourse = this.selectNextCourse.bind(this)
+
   }
 
   async selectNextCourse(){
-    let index = 0
-    this.props.courses.map((c, i) => c.code === this.props.selectedCourse ? index = i+1 : '')
-    await this.selectCourse(this.props.courses[index].code)
+    await this.selectCourse(this.props.courses[this.props.index].code)
     getInfoOnCourse(this.props.selectedCourse, this.setCourseInfo)
   }
 
@@ -60,6 +59,8 @@ export default class CurrentCourse extends Component{
            </div>
 
          <Grades
+           index={this.props.index}
+           increaseIndex={this.props.increaseIndex}
            setAverage={this.props.setAverage}
            hp={this.props.courseInfo && this.props.courseInfo.points}
            addHp={this.props.addHp}
@@ -80,10 +81,12 @@ export default class CurrentCourse extends Component{
       }
       {this.props.points>=180 &&
         <Master
+          index={this.props.index}
           currentCourse={this.props.currentCourse}
           courses={this.props.courses}
           addMasterCourse={this.props.addMasterCourse}
           masterCourses={this.props.masterCourses}
+          selectedYear={this.props.selectedYear}
         />
       }
       </div>

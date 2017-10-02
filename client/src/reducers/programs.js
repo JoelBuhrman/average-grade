@@ -12,10 +12,16 @@ const initialState = {
   years: [],
   selectedYear: null,
   readyToCalculate: false,
+  index: 0,
 }
 
 export default function programsReducer (state = initialState, action) {
   switch (action.type) {
+    case types.INCREASE_INDEX:
+      return {
+        ...state,
+        index: state.index +1,
+      }
     case types.SET_READY_TO_CALCULATE:
       return {
         ...state,

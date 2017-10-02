@@ -61,6 +61,7 @@ app.get('/api/courses/:id/:year', (req, res) => {
 
 
 app.get('/api/courseInfo/:id/:year', (req, res) => {
+  console.log("Getting courseInfo", req.params.year, req.params.id);
   let years = req.params.year.substring(2,4)+ '_' + (req.params.year.substring(2,3) === 0 ? '0' : '')+ (parseInt(req.params.year.substring(2,4))+1);
   console.log(years);
   let full_url = base_url_selected_course[0]+years+'/'+ req.params.id
@@ -98,6 +99,31 @@ app.get('/api/courseInfo/:id/:year', (req, res) => {
   return information
   });
 });
+
+
+app.get('/api/masterCourses/:id/:year', (req, res) => {
+  let years = req.params.year.substring(2,4)+ '_' + (req.params.year.substring(2,3) === 0 ? '0' : '')+ (parseInt(req.params.year.substring(2,4))+1);
+  console.log(years);
+  let full_url = base_url_courses[0]+years+base_url_courses[1] + req.params.id + base_url_courses[2]
+  axios.get(full_url).then( (response) => {
+  let $ = cheerio.load(response.data);
+  let courses = [];
+
+  $('td a').each( (i, elm) => {
+    if(elm.children[0].data.length === 6 && courses.filter(e=>e.code === $(elm).text()).length === 0){
+      courses.push( {
+        code: $(elm).text(),
+      });
+    }
+  })
+  return(courses);
+  })
+  .then ( (courses) => {
+  res.json(courses)
+  return courses
+  });
+});
+
 
 
 app.get('/api/years', (req, res) => {

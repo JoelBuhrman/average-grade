@@ -10,9 +10,13 @@ export default class Master extends Component{
 
 
   componentDidMount(){
-    let index = -1
-    this.props.courses.map((course, i) => course.code === this.props.currentCourse ? index = i : '')
-    getMasterCourses(index+1, this.props.courses, this.props.addMasterCourse)
+    console.log(this.props.index);
+    console.log(this.props.courses.length);
+    for(let i = this.props.index; i<this.props.courses.length; i++){
+      fetch('/api/courseInfo/'+this.props.courses[i].code+'/'+this.props.selectedYear)
+        .then(res => res.json())
+        .then(course => this.props.addMasterCourse(course));
+    }
   }
 
 
@@ -23,8 +27,8 @@ export default class Master extends Component{
         <div className="masterHolder">
         {this.props.masterCourses.length>0 && this.props.masterCourses.map((course) =>
            <div>
-             <span>{course.title}, {course.points}HP</span>
-             <Grades/>
+             <div className="masterLeft">{course.title}, {course.points}HP</div>
+             <Grades master/>
            </div>
          )}
          </div>

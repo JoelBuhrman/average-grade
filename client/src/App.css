@@ -118,6 +118,12 @@ position: relative;
   margin-top: 50px;
   cursor: pointer;
 }
+
+.grade.master{
+  width: 30px;
+  height: 30px;
+  margin-top: 0px;
+}
 .grade:hover{
   background-color: rgba(193, 222, 252, 0.9);
 }
@@ -133,6 +139,12 @@ position: relative;
   margin: 5px;
   margin-top: 50px;
   cursor: pointer;
+}
+
+.failGrade.master{
+  width: 30px;
+  height: 30px;
+  margin-top: 0px;
 }
 .failGrade:hover{
   background-color: rgba(193, 222, 252, 0.9);
@@ -160,4 +172,15 @@ position: relative;
 }
 .programItem:hover{
   background: red;
+}
+
+.masterLeft{
+  width: 70%;
+  display: inline-block;
+}
+
+.masterRight{
+  width: 30%;
+  display: inline-block;
+  text-align: right;
 }

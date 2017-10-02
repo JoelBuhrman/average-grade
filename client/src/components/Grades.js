@@ -10,6 +10,8 @@ export default class Grades extends Component{
     this.setCourseInfo = this.setCourseInfo.bind(this)
     this.selectCourse = this.selectCourse.bind(this)
     this.selectNextCourse = this.selectNextCourse.bind(this)
+
+
   }
 
   calculateAverage(grade){
@@ -21,9 +23,8 @@ export default class Grades extends Component{
 
 
   async selectNextCourse(){
-    let index = 0
-    this.props.courses.map((c, i) => c.code === this.props.selectedCourse ? index = i+1 : '')
-    await this.selectCourse(this.props.courses[index].code)
+    await this.props.increaseIndex()
+    await this.selectCourse(this.props.courses[this.props.index].code)
     fetch('/api/courseInfo/'+this.props.selectedCourse+'/'+this.props.selectedYear)
       .then(res => res.json())
       .then(courseInfo => this.props.setCourseInfo(courseInfo));
@@ -39,12 +40,12 @@ export default class Grades extends Component{
 
   render(){
     return(
-      <span>
-           <button className="failGrade" onClick={()=>this.calculateAverage(0)}>U</button>
-           <button className="grade" onClick={()=>this.calculateAverage(3)}>3</button>
-           <button className="grade" onClick={()=>this.calculateAverage(4)}>4</button>
-           <button className="grade" onClick={()=>this.calculateAverage(5)}>5</button>
-      </span>
+      <div className={this.props.master ? "masterRight" : ''}>
+           <button className={this.props.master ? "master failGrade" : "failGrade"} onClick={()=>this.calculateAverage(0)}>U</button>
+           <button className={this.props.master ? "master grade" : "grade"} onClick={()=>this.calculateAverage(3)}>3</button>
+           <button className={this.props.master ? "master grade" : "grade"} onClick={()=>this.calculateAverage(4)}>4</button>
+           <button className={this.props.master ? "master grade" : "grade"} onClick={()=>this.calculateAverage(5)}>5</button>
+      </div>
     )
   }
 }

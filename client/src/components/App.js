@@ -72,6 +72,8 @@ class App extends Component {
                 points={this.props.hp}
                 addMasterCourse={this.props.addMasterCourse}
                 masterCourses={this.props.masterCourses}
+                index={this.props.index}
+                increaseIndex={this.props.increaseIndex}
               />
             {this.props.courseInfo &&
               <Average average={this.props.hp === 0 ? 0: (this.props.hpGradeMultiply/this.props.hp).toFixed(2)}/>
@@ -97,7 +99,8 @@ function mapStateToProps (state) {
     masterCourses: state.programs.masterCourses,
     years: state.programs.years,
     selectedYear: state.programs.selectedYear,
-    readyToCalculate: state.programs.readyToCalculate
+    readyToCalculate: state.programs.readyToCalculate,
+    index: state.programs.index,
   }
 }
 
@@ -119,6 +122,7 @@ App.propTypes = {
   years: PropTypes.arrayOf(PropTypes.any),
   readyToCalculate: PropTypes.bool,
   selectedYear: PropTypes.arrayOf(PropTypes.any),
+  index: PropTypes.Integer,
 }
 
 App.defaultProps = {

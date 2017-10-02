@@ -1,6 +1,13 @@
 import * as types from '../constants'
 
 
+export function increaseIndex () {
+  return (dispatch) => {
+    dispatch({
+      type: types.INCREASE_INDEX,
+    })
+  }
+}
 
 export function setReadyToCalculate () {
   return (dispatch) => {
