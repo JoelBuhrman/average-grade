@@ -41,10 +41,21 @@ export default class CurrentCourse extends Component{
 
 
   async componentDidMount(){
-    fetch('/api/courses/'+this.props.selectedProgram+'/'+this.props.selectedYear)
+    await fetch('/api/courses/'+this.props.selectedProgram+'/'+this.props.selectedYear)
       .then(res => res.json())
       .then(courses => this.props.getCourses(courses));
-    //await getCourses(this.props.selectedProgram, this.props.getCourses)
+
+    fetch('/api/specialisations/'+this.props.selectedProgram+'/'+this.props.selectedYear)
+      .then(res => res.json())
+      .then(specialisations => this.props.getSpecialisations(specialisations));
+
+    for(let i = 0; i< this.props.courses.length; i++){
+      fetch('/api/getspecialisations/'+this.props.courses[i].code)
+        .then(res => res.json())
+        .then(specialisations => this.props.addToSpecialisations(specialisations, this.props.courses[i].code));
+
+    }
+
   }
 
   render(){

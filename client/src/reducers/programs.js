@@ -13,6 +13,7 @@ const initialState = {
   selectedYear: null,
   readyToCalculate: false,
   index: 0,
+  specialisations: [],
 }
 
 export default function programsReducer (state = initialState, action) {
@@ -52,6 +53,11 @@ export default function programsReducer (state = initialState, action) {
         ...state,
         courses: [...action.payload],
       }
+    case types.GET_SPECIALISATIONS:
+      return {
+        ...state,
+        specialisations: [...action.payload],
+      }
     case types.SET_CURRENT_COURSE:
       return {
         ...state,
@@ -77,7 +83,36 @@ export default function programsReducer (state = initialState, action) {
         ...state,
         masterCourses: [...state.masterCourses, action.payload],
       }
+    case types.ADD_TO_SPECIALISATIONS:
+      let temp = state.specialisations
+      let course = action.course
+      console.log(course);
+      for(let i = 0; i< action.specialisations.length; i++){
+        let index = getIndex(temp, action.specialisations[i], course)
+
+        if(index > -1){
+          temp[index] = {
+            ...temp[index],
+            courses: [...temp[index].courses, course]
+          }
+        }
+      }
+      return {
+        ...state,
+        specialisations: temp,
+      }
     default:
     return state
   }
+}
+
+const getIndex = function(array, object, course){
+  let index = -1
+  
+  for(let i = 0; i<array.length; i++){
+    if(array[i].title == object){
+      return i
+    }
+  }
+  return index
 }

@@ -15,6 +15,7 @@ let base_url_courses = [
 let base_url_selected_course= [
   'https://kurser.lth.se/kursplaner/',
 ]
+let specialisation = 'https://kurser.lth.se/lot/?val=kurs&kurskod='
 
 app.get('/api/programs', (req, res) => {
   let programs = [];
@@ -37,12 +38,16 @@ app.get('/api/programs', (req, res) => {
 });
 
 app.get('/api/courses/:id/:year', (req, res) => {
+
   let years = req.params.year.substring(2,4)+ '_' + (req.params.year.substring(2,3) === 0 ? '0' : '')+ (parseInt(req.params.year.substring(2,4))+1);
-  console.log(years);
+
   let full_url = base_url_courses[0]+years+base_url_courses[1] + req.params.id + base_url_courses[2]
+
   axios.get(full_url).then( (response) => {
+
   let $ = cheerio.load(response.data);
   let courses = [];
+
 
   $('td a').each( (i, elm) => {
     if(elm.children[0].data.length === 6 && courses.filter(e=>e.code === $(elm).text()).length === 0){
@@ -59,12 +64,71 @@ app.get('/api/courses/:id/:year', (req, res) => {
   });
 });
 
+app.get('/api/specialisations/:id/:year', (req, res) => {
+
+  let years = req.params.year.substring(2,4)+ '_' + (req.params.year.substring(2,3) === 0 ? '0' : '')+ (parseInt(req.params.year.substring(2,4))+1);
+
+  let full_url = base_url_courses[0]+years+base_url_courses[1] + req.params.id + base_url_courses[2]
+
+  axios.get(full_url).then( (response) => {
+
+  let $ = cheerio.load(response.data);
+  let specialisations = [];
+
+  $('h3').each( (i, elm) => {
+    if($(elm).text().startsWith("Specialisering")){
+      specialisations.push( {
+        title: $(elm).text().substring($(elm).text().indexOf('-')+2, $(elm).text().length),
+        courses: [],
+      });
+    }
+  })
+  return(specialisations);
+  })
+  .then ( (specialisations) => {
+  res.json(specialisations)
+  return specialisations
+  });
+});
+
+
+app.get('/api/getspecialisations/:coursecode', (req, res) => {
+
+  let courseCode = req.params.coursecode
+
+
+
+  axios.get(specialisation+courseCode).then( (response) => {
+
+  let $ = cheerio.load(response.data);
+  let specialisations = [];
+
+  $('td .pdf-noprint').each( (i, elm) => {
+
+    if(! $(elm).text().startsWith("Föreläsningar") && specialisations.indexOf($(elm).text()) === -1){
+      console.log("pushing", $(elm).text(), specialisations.indexOf($(elm).text()));
+      specialisations.push($(elm).text());
+    }
+
+
+  })
+  return(specialisations);
+  })
+  .then ( (specialisations) => {
+  res.json(specialisations)
+  return specialisations
+  });
+
+});
+
 
 app.get('/api/courseInfo/:id/:year', (req, res) => {
-  console.log("Getting courseInfo", req.params.year, req.params.id);
+
   let years = req.params.year.substring(2,4)+ '_' + (req.params.year.substring(2,3) === 0 ? '0' : '')+ (parseInt(req.params.year.substring(2,4))+1);
-  console.log(years);
+
   let full_url = base_url_selected_course[0]+years+'/'+ req.params.id
+
+
   axios.get(full_url).then( (response) => {
   let $ = cheerio.load(response.data);
   let information = {
@@ -101,29 +165,6 @@ app.get('/api/courseInfo/:id/:year', (req, res) => {
 });
 
 
-app.get('/api/masterCourses/:id/:year', (req, res) => {
-  let years = req.params.year.substring(2,4)+ '_' + (req.params.year.substring(2,3) === 0 ? '0' : '')+ (parseInt(req.params.year.substring(2,4))+1);
-  console.log(years);
-  let full_url = base_url_courses[0]+years+base_url_courses[1] + req.params.id + base_url_courses[2]
-  axios.get(full_url).then( (response) => {
-  let $ = cheerio.load(response.data);
-  let courses = [];
-
-  $('td a').each( (i, elm) => {
-    if(elm.children[0].data.length === 6 && courses.filter(e=>e.code === $(elm).text()).length === 0){
-      courses.push( {
-        code: $(elm).text(),
-      });
-    }
-  })
-  return(courses);
-  })
-  .then ( (courses) => {
-  res.json(courses)
-  return courses
-  });
-});
-
 
 
 app.get('/api/years', (req, res) => {
@@ -155,4 +196,4 @@ app.get('*', (req, res) => {
 const port = process.env.PORT || 5000;
 app.listen(port);
 
-console.log(`Password generator listening on ${port}`);
+console.log(`Listening on ${port}`);

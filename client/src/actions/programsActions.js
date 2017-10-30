@@ -62,6 +62,15 @@ export function getCourses (courses) {
   }
 }
 
+export function getSpecialisations (specialisations) {
+  return (dispatch) => {
+    dispatch({
+      type: types.GET_SPECIALISATIONS,
+      payload: specialisations,
+    })
+  }
+}
+
 export function setCurrentCourse (course) {
   return (dispatch) => {
     dispatch({
@@ -103,6 +112,16 @@ export function addMasterCourse(course) {
     dispatch({
       type: types.ADD_MASTER_COURSE,
       payload: course,
+    })
+  }
+}
+
+export function addToSpecialisations(specialisations, courseCode) {
+  return (dispatch) => {
+    dispatch({
+      type: types.ADD_TO_SPECIALISATIONS,
+      specialisations: specialisations,
+      course: courseCode,
     })
   }
 }
